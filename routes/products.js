@@ -7,4 +7,6 @@ routes.get("/getById/:productId", productsContoller.getPoductByID)
 
 routes.post("/createOne", productsContoller.postUserProducts)
 
+routes.put("/updateOne/:productId", productsContoller.updateProduct)
+
 module.exports = routes

@@ -77,3 +77,37 @@ exports.postUserProducts = (req, res, next) => {
             next(err)
         })
 }
+
+// update product
+exports.updateProduct = (req, res, next)=>{
+    const id = req.params.productId
+    Product.findById(id)
+    .then(product=>{
+        if(!product){
+            let error = new Error("no product found")
+            error.statusCode = 422
+            throw (error)
+        }
+        let imageUrl = req.file || req.body.image || "nothing here"
+        product.author = req.body.author || "lukman"
+        product.title = req.body.title || "adjusted file"
+        product.image = imageUrl
+        return product.save()
+        .then(result=>{
+            res.status(201).json(
+                {
+                    message: "product updated successfully",
+                    data: result
+                }
+            )
+        })
+    })
+    .catch(err=>{
+        next(err)
+    })
+}
+
+let clearImage = filePath=>{
+    let filePath = path.join(__dirname, '..', filePath)
+    false.unlink(filePath)
+}
