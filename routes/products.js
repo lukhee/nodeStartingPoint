@@ -9,4 +9,6 @@ routes.post("/createOne", productsContoller.postUserProducts)
 
 routes.put("/updateOne/:productId", productsContoller.updateProduct)
 
+routes.delete("/deleteOne/:productId", productsContoller.deleteProduct)
+
 module.exports = routes

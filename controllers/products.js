@@ -1,11 +1,12 @@
 const Product = require("../models/productModel")
+const path = require("path")
+const fs = require("fs")
 
 
 // get all products
-exports.getProducts = (req, res, next) => {
+exports.getProducts = (req, res, next) => {  
     Product.find()
         .then(products => {
-            console.log(products)
             res.status(200).json({
                 message: "get products is successfull",
                 data: {
@@ -77,10 +78,11 @@ exports.postUserProducts = (req, res, next) => {
             next(err)
         })
 }
-
+// images/fd50f308-dab6-4bfe-9611-046da9d383e8AA8_0284.JPG
 // update product
 exports.updateProduct = (req, res, next)=>{
     const id = req.params.productId
+    let imageURL
     Product.findById(id)
     .then(product=>{
         if(!product){
@@ -88,10 +90,17 @@ exports.updateProduct = (req, res, next)=>{
             error.statusCode = 422
             throw (error)
         }
-        let imageUrl = req.file || req.body.image || "nothing here"
+        if(req.file){
+            clearImage(product.image)
+            imageURL = req.file.path
+            console.log("new image uploade")
+        }else{
+            imageURL = product.image
+            console.log("old image url uploaded")
+        }
         product.author = req.body.author || "lukman"
         product.title = req.body.title || "adjusted file"
-        product.image = imageUrl
+        product.image = imageURL
         return product.save()
         .then(result=>{
             res.status(201).json(
@@ -107,7 +116,36 @@ exports.updateProduct = (req, res, next)=>{
     })
 }
 
+exports.deleteProduct = (req, res, next)=>{
+    let id = req.params.productId;
+    Product.findById(id).then(product=>{
+        console.log(product)
+        if(!product){
+            let error = new Error("no product found")
+            error.statusCode = 422
+            throw (error)
+        }else if(product.image){
+            clearImage(product.image)
+        }
+        return Product.findByIdAndDelete(product._id)
+        .then(result=>{
+            res.status(201).json({
+                message: "product successfully deleted",
+                data: result
+            })
+        })
+    })
+    .catch(err=>{
+        console.log(err)
+        next(err)
+    })
+}
+
+
+//clear multiple images in the route folder
 let clearImage = filePath=>{
-    let filePath = path.join(__dirname, '..', filePath)
-    false.unlink(filePath)
+    let filepath = path.join(__dirname, '..', filePath)
+    console.log(filepath)
+    fs.unlink(filepath, err =>{
+    })
 }
