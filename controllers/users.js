@@ -1,12 +1,7 @@
 const User = require("../models/userModel")
 const {validationResult} = require("express-validator")
-
-
-exports.getUser = (req, res, next)=>{
-    res.json({
-        message : "user found"
-    })
-}
+const bcrypt = require('bcrypt');
+const saltRounds = 12;
 
 exports.signUp = (req, res, next) => {
     let errors = validationResult(req)
@@ -16,17 +11,22 @@ exports.signUp = (req, res, next) => {
         error.data = errors.array()
         throw(error)
     }
-    let user = new User({
-        name: "balogun lukman",
-        email: "o.balogun@ymail.com",
-        password: "password"
+    bcrypt.hash(req.body.password, saltRounds)
+        .then(hashPassword => {
+            let user = new User({
+                name : req.body.name,
+                email : req.body.email,
+                password : hashPassword
+            })
+            return user.save()
     })
-    user.save()
-    .then()
+    .then(result=>{
+        res.status(200).json({
+            message: "user created successfully",
+            userID : result._id
+        })
+    })
     .catch(err=>{
         next(err)
-    })
-    res.json({
-        message: "user found"
     })
 }

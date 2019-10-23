@@ -3,12 +3,10 @@ const User = require("../models/userModel")
 const usersController = require('../controllers/users')
 const {body} = require('express-validator/check')
 
-routes.get('/', usersController.getUser)
-
-routes.post('/', [
+routes.post('/createUser', [
 body("email")
 .isEmail()
-.withMessage('reister with valid email sddress')
+.withMessage('reister with valid email address')
 .custom((value, {req})=>{
     return User.findOne({email: value})
     .then(userFound =>{

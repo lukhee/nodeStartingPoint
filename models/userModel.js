@@ -19,7 +19,7 @@ let UserSchema = new Schema({
     },
     status: {
         type: String,
-        required: true
+        default: "i am a new user"
     },
     products: [{
         type: Schema.Types.ObjectId,
