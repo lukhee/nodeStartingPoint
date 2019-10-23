@@ -5,6 +5,7 @@ const uuidv4 = require("uuid/v4")
 const path = require("path");
 const bodyParser = require("body-parser");
 const productRoute = require("./routes/products");
+const userRoute = require("./routes/users");
 const URL = 'mongodb://localhost:27017/bagshop';
 const PORT = 8080;
 
@@ -45,12 +46,15 @@ app.use((req, res, next)=>{
 });
 
 app.use("/", productRoute )
+app.use("/user", userRoute)
 
 app.use((error, req, res, next)=>{
     let status = error.statusCode || 500
     let message = error.message
+    let data = error.data
     res.status(status).json({
-        message: message
+        message: message,
+        data : data
     })
 })
 

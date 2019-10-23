@@ -16,7 +16,15 @@ let UserSchema = new Schema({
     password: {
         type: String,
         required: false
-    }
+    },
+    status: {
+        type: String,
+        required: true
+    },
+    products: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Products'
+    }]
 }, {
     timestamps: true
 })

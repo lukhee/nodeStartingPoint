@@ -25,7 +25,7 @@ exports.getProducts = (req, res, next) => {
 
 // get product by ID
 exports.getPoductByID = (req, res, next) => {
-    const id = req.params.productId
+    const id = req.params.productId 
     Product.findById(id)
         .then(product => {
             if (!product) {
