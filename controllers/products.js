@@ -78,7 +78,7 @@ exports.postUserProducts = (req, res, next) => {
             next(err)
         })
 }
-// images/fd50f308-dab6-4bfe-9611-046da9d383e8AA8_0284.JPG
+
 // update product
 exports.updateProduct = (req, res, next)=>{
     const id = req.params.productId
@@ -116,6 +116,7 @@ exports.updateProduct = (req, res, next)=>{
     })
 }
 
+// delete product
 exports.deleteProduct = (req, res, next)=>{
     let id = req.params.productId;
     Product.findById(id).then(product=>{
@@ -142,7 +143,7 @@ exports.deleteProduct = (req, res, next)=>{
 }
 
 
-//clear multiple images in the route folder
+//clear multiple images during update
 let clearImage = filePath=>{
     let filepath = path.join(__dirname, '..', filePath)
     console.log(filepath)

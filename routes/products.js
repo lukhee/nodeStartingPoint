@@ -1,11 +1,12 @@
 const routes = require("express").Router()
+const isAuth = require('../middleware/auth')
 const productsContoller = require("../controllers/products")
 
-routes.get("/getAll", productsContoller.getProducts)
+routes.get("/getAll", isAuth, productsContoller.getProducts)
 
 routes.get("/getById/:productId", productsContoller.getPoductByID)
 
-routes.post("/createOne", productsContoller.postUserProducts)
+routes.post("/createOne", isAuth,  productsContoller.postUserProducts)
 
 routes.put("/updateOne/:productId", productsContoller.updateProduct)
 

@@ -18,10 +18,14 @@ body("email")
 .normalizeEmail(),
 body("password")
     .trim()
-    .isLength({max: 4}),
+    .isLength({min: 4}),
 body("name")
     .trim()
     .not().isEmpty()
 ], usersController.signUp)
+
+routes.get("/getAllUsers", usersController.getAllUsers)
+
+routes.get("/login", usersController.loginUser)
 
 module.exports = routes
